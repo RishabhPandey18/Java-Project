@@ -1,0 +1,431 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>ChronoTask</title>
+
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <!-- LOGIN PAGE -->
+    <section id="loginPage" class="login-page">
+        <div class="login-card">
+            <div class="brand-logo">C</div>
+
+            <h1>ChronoTask</h1>
+            <p class="muted">Plan smarter. Get things done.</p>
+
+            <form id="loginForm">
+                <label for="loginEmail">Email address</label>
+                <input
+                    type="email"
+                    id="loginEmail"
+                    placeholder="you@example.com"
+                    required
+                >
+
+                <label for="loginPassword">Password</label>
+                <input
+                    type="password"
+                    id="loginPassword"
+                    placeholder="Enter your password"
+                    required
+                    minlength="4"
+                >
+
+                <button type="submit" class="primary-btn full-width">
+                    Login to Dashboard →
+                </button>
+            </form>
+
+            <p class="login-note">
+                Demo frontend · No real account required
+            </p>
+        </div>
+    </section>
+
+
+    <!-- MAIN APPLICATION -->
+    <div id="app" class="app hidden">
+
+        <!-- SIDEBAR -->
+        <aside class="sidebar">
+
+            <div class="sidebar-brand">
+                <div class="brand-logo small-logo">C</div>
+
+                <div>
+                    <h2>ChronoTask</h2>
+                    <span>Productivity workspace</span>
+                </div>
+            </div>
+
+            <div class="sidebar-label">WORKSPACE</div>
+
+            <nav class="navigation">
+
+                <button class="nav-item active" data-page="dashboard">
+                    <span>▦</span> Dashboard
+                </button>
+
+                <button class="nav-item" data-page="tasks">
+                    <span>✓</span> My Tasks
+                </button>
+
+                <button class="nav-item" data-page="schedule">
+                    <span>▣</span> Schedule
+                </button>
+
+                <button class="nav-item" data-page="priorities">
+                    <span>◈</span> Priorities
+                </button>
+
+                <button class="nav-item" data-page="activity">
+                    <span>↗</span> Activity
+                </button>
+
+            </nav>
+
+            <div class="sidebar-bottom">
+
+                <button class="nav-item" data-page="settings">
+                    <span>⚙</span> Settings
+                </button>
+
+                <button class="nav-item logout-btn" id="logoutBtn">
+                    <span>↪</span> Logout
+                </button>
+
+                <div class="profile-mini">
+                    <div class="avatar" id="sidebarAvatar">U</div>
+
+                    <div class="profile-details">
+                        <strong id="sidebarName">User</strong>
+                        <span>Personal workspace</span>
+                    </div>
+                </div>
+
+            </div>
+        </aside>
+
+
+        <!-- MAIN CONTENT -->
+        <main class="main-content">
+
+            <header class="topbar">
+                <div>
+                    <p class="muted top-date" id="currentDate"></p>
+                    <h1 id="pageTitle">Dashboard</h1>
+                </div>
+
+                <button class="primary-btn" id="topAddTask">
+                    + New Task
+                </button>
+            </header>
+
+
+            <!-- DASHBOARD PAGE -->
+            <section class="page active-page" id="dashboardPage">
+
+                <div class="welcome-banner">
+                    <div>
+                        <p class="banner-label">YOUR PRODUCTIVITY SPACE</p>
+
+                        <h2 id="welcomeHeading">Welcome back!</h2>
+
+                        <p>
+                            Make today count. Focus on what matters most.
+                        </p>
+                    </div>
+
+                    <div class="banner-symbol">✦</div>
+                </div>
+
+
+                <div class="stats-grid">
+
+                    <article class="stat-card">
+                        <p>Total Tasks</p>
+                        <h2 id="totalTasks">0</h2>
+                        <span>Tasks in your workspace</span>
+                    </article>
+
+                    <article class="stat-card">
+                        <p>Completed</p>
+                        <h2 id="completedTasks">0</h2>
+                        <span>Tasks finished</span>
+                    </article>
+
+                    <article class="stat-card">
+                        <p>Pending</p>
+                        <h2 id="pendingTasks">0</h2>
+                        <span>Tasks remaining</span>
+                    </article>
+
+                    <article class="stat-card">
+                        <p>High Priority</p>
+                        <h2 id="highTasks">0</h2>
+                        <span>Tasks needing attention</span>
+                    </article>
+
+                </div>
+
+
+                <div class="content-grid">
+
+                    <article class="panel">
+                        <div class="panel-heading">
+                            <div>
+                                <h3>Today's Tasks</h3>
+                                <p>What needs your attention today?</p>
+                            </div>
+
+                            <button class="text-btn" data-go="tasks">
+                                View all →
+                            </button>
+                        </div>
+
+                        <div id="dashboardTaskList" class="task-list"></div>
+                    </article>
+
+
+                    <article class="panel progress-panel">
+                        <h3>Productivity Overview</h3>
+                        <p class="muted">Your overall completion rate</p>
+
+                        <div class="progress-circle" id="progressCircle">
+                            <div>
+                                <strong id="completionPercent">0%</strong>
+                                <span>Completed</span>
+                            </div>
+                        </div>
+
+                        <p class="progress-message" id="progressMessage">
+                            Start your first task to build momentum.
+                        </p>
+                    </article>
+
+                </div>
+
+            </section>
+
+
+            <!-- TASKS PAGE -->
+            <section class="page" id="tasksPage">
+
+                <div class="panel">
+                    <div class="panel-heading">
+                        <div>
+                            <h3>Task Manager</h3>
+                            <p>Create tasks and manage your workload.</p>
+                        </div>
+                    </div>
+
+                    <form id="taskForm" class="task-form">
+
+                        <div class="form-field">
+                            <label for="taskTitle">Task title</label>
+
+                            <input
+                                type="text"
+                                id="taskTitle"
+                                placeholder="e.g. Study Java arrays"
+                                required
+                                maxlength="120"
+                            >
+                        </div>
+
+                        <div class="form-field">
+                            <label for="taskDate">Due date</label>
+
+                            <input
+                                type="date"
+                                id="taskDate"
+                                required
+                            >
+                        </div>
+
+                        <div class="form-field">
+                            <label for="taskPriority">Priority</label>
+
+                            <select id="taskPriority">
+                                <option value="High">High</option>
+                                <option value="Medium" selected>Medium</option>
+                                <option value="Low">Low</option>
+                            </select>
+                        </div>
+
+                        <button type="submit" class="primary-btn">
+                            Add Task
+                        </button>
+
+                    </form>
+
+                    <div class="filter-row">
+                        <label for="taskFilter">Show:</label>
+
+                        <select id="taskFilter">
+                            <option value="All">All tasks</option>
+                            <option value="Pending">Pending</option>
+                            <option value="Completed">Completed</option>
+                            <option value="High">High priority</option>
+                            <option value="Medium">Medium priority</option>
+                            <option value="Low">Low priority</option>
+                        </select>
+                    </div>
+
+                    <div id="allTaskList" class="task-list"></div>
+                </div>
+
+            </section>
+
+
+            <!-- SCHEDULE PAGE -->
+            <section class="page" id="schedulePage">
+
+                <div class="panel">
+                    <div class="panel-heading">
+                        <div>
+                            <h3>Upcoming Schedule</h3>
+                            <p>Tasks organized by their due dates.</p>
+                        </div>
+                    </div>
+
+                    <div id="scheduleList" class="schedule-list"></div>
+                </div>
+
+            </section>
+
+
+            <!-- PRIORITIES PAGE -->
+            <section class="page" id="prioritiesPage">
+
+                <div class="priority-columns">
+
+                    <article class="priority-column">
+                        <div class="priority-heading high-heading">
+                            <span>● High Priority</span>
+                            <span id="highCount">0</span>
+                        </div>
+
+                        <div id="highPriorityList"></div>
+                    </article>
+
+                    <article class="priority-column">
+                        <div class="priority-heading medium-heading">
+                            <span>● Medium Priority</span>
+                            <span id="mediumCount">0</span>
+                        </div>
+
+                        <div id="mediumPriorityList"></div>
+                    </article>
+
+                    <article class="priority-column">
+                        <div class="priority-heading low-heading">
+                            <span>● Low Priority</span>
+                            <span id="lowCount">0</span>
+                        </div>
+
+                        <div id="lowPriorityList"></div>
+                    </article>
+
+                </div>
+
+            </section>
+
+
+            <!-- ACTIVITY PAGE -->
+            <section class="page" id="activityPage">
+
+                <div class="panel">
+                    <div class="panel-heading">
+                        <div>
+                            <h3>Recent Activity</h3>
+                            <p>See what has happened in your workspace.</p>
+                        </div>
+
+                        <button id="clearActivity" class="text-btn">
+                            Clear history
+                        </button>
+                    </div>
+
+                    <div id="activityList" class="activity-list"></div>
+                </div>
+
+            </section>
+
+
+            <!-- SETTINGS PAGE -->
+            <section class="page" id="settingsPage">
+
+                <div class="panel settings-panel">
+
+                    <h3>Workspace Settings</h3>
+
+                    <p class="muted">
+                        Customize your personal productivity workspace.
+                    </p>
+
+                    <form id="settingsForm">
+
+                        <div class="form-field">
+                            <label for="displayName">Display name</label>
+
+                            <input
+                                type="text"
+                                id="displayName"
+                                maxlength="50"
+                                required
+                            >
+                        </div>
+
+                        <div class="form-field">
+                            <label for="displayEmail">Email address</label>
+
+                            <input
+                                type="email"
+                                id="displayEmail"
+                                disabled
+                            >
+                        </div>
+
+                        <button class="primary-btn" type="submit">
+                            Save Changes
+                        </button>
+
+                    </form>
+
+                    <hr>
+
+                    <h3>Data Management</h3>
+
+                    <p class="muted">
+                        Your tasks are stored in this browser.
+                    </p>
+
+                    <button class="danger-btn" id="resetTasks">
+                        Delete All Tasks
+                    </button>
+
+                </div>
+
+            </section>
+
+            <footer class="app-footer">
+                ChronoTask · Plan your time. Protect your focus.
+            </footer>
+
+        </main>
+
+    </div>
+
+    <div id="toast" class="toast"></div>
+
+    <script src="script.js"></script>
+
+</body>
+</html>
